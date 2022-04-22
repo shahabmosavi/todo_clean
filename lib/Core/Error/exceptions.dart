@@ -1,0 +1,1 @@
+class RegisterException implements Exception {}
