@@ -14,5 +14,5 @@ void main() {
     dataSource = RegisterLocalDataSourceImpl(mockSharedPrefrences);
   });
 
-  group('register', () {});
+  group('register', () {p});
 }
