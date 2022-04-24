@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_clean/Screens/Login/Presentation/Pages/login_page.dart';
 import 'package:todo_clean/Screens/Register/Presentation/Getx/register_getx.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -13,13 +14,14 @@ class RegisterPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Register')),
       body: SingleChildScrollView(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-        child: Center(
-          child: getx.state == RegisterGetxStates.loading
-              ? const CircularProgressIndicator()
-              : const RegisterForm(),
-        ),
-      )),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+              child: Obx(
+                () => Center(
+                  child: getx.state == RegisterGetxStates.loading
+                      ? const CircularProgressIndicator()
+                      : const RegisterForm(),
+                ),
+              ))),
     );
   }
 }
@@ -53,7 +55,9 @@ class _RegisterFormState extends State<RegisterForm> {
         children: [
           AnimatedSize(
               duration: const Duration(milliseconds: 200),
-              child: Text(getx.message)),
+              child: Obx(
+                () => Text(getx.message),
+              )),
           TextFormField(
             decoration: const InputDecoration(hintText: 'Username'),
             onSaved: (String? val) {
@@ -102,7 +106,9 @@ class _RegisterFormState extends State<RegisterForm> {
           ),
           const SizedBox(height: 50),
           GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.to(() => const LoginPage());
+              },
               child: const Text(
                 'You have an account?',
                 style: TextStyle(
