@@ -14,7 +14,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
     try {
       return Right(await localDataSource.register(username, password));
     } on RegisterException {
-      return Left(RegisterFailure());
+      return const Left(RegisterFailure());
     }
   }
 }

@@ -46,7 +46,7 @@ void main() {
           await registerRepositoryImpl.register(tUsername, tPassword);
 
       //assert
-      expect(result, Left(RegisterFailure()));
+      expect(result, const Left(RegisterFailure()));
       verify(() => mockLocalDataSource.register(tUsername, tPassword))
           .called(1);
     });
