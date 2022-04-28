@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:todo_clean/Screens/Todo/Data/Models/todo_model.dart';
@@ -20,22 +19,22 @@ void main() {
   test("should call addTodo with proper data from the repository", () async {
     // arrange
     when(() => mockTodoRepository.addTodo(any()))
-        .thenAnswer((_) async => const Right(tTodoModel));
+        .thenAnswer((_) async => tTodoModel);
     //act
     final result = await usecases.addTodo(tTask);
     //assert
-    expect(result, const Right(tTodoModel));
+    expect(result, tTodoModel);
     verify(() => mockTodoRepository.addTodo(tTask));
     verifyNoMoreInteractions(mockTodoRepository);
   });
   test("should call loadTodos with proper data from the repository", () async {
     // arrange
     when(() => mockTodoRepository.loadTodos())
-        .thenAnswer((_) async => const Right(<TodoEntity>[tTodoModel]));
+        .thenAnswer((_) async => const <TodoEntity>[tTodoModel]);
     //act
     final result = await usecases.loadTodos();
     //assert
-    expect(result, const Right(<TodoEntity>[tTodoModel]));
+    expect(result, const <TodoEntity>[tTodoModel]);
     verify(() => mockTodoRepository.loadTodos());
     verifyNoMoreInteractions(mockTodoRepository);
   });

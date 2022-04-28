@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../Pages/login_page.dart';
 import '../Getx/login_getx.dart';
 import '../../../Register/Presentation/Pages/register_page.dart';
 
