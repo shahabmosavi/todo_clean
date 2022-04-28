@@ -85,7 +85,7 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 50),
           GestureDetector(
               onTap: () {
-                Get.to(() => const RegisterPage());
+                Get.offAll(() => const RegisterPage());
               },
               child: const Text(
                 'Dont have an account?',

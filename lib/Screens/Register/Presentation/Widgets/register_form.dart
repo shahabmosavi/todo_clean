@@ -84,7 +84,7 @@ class _RegisterFormState extends State<RegisterForm> {
           const SizedBox(height: 50),
           GestureDetector(
               onTap: () {
-                Get.to(() => const LoginPage());
+                Get.offAll(() => const LoginPage());
               },
               child: const Text(
                 'You have an account?',

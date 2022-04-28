@@ -21,7 +21,7 @@ class RegisterGetx {
       _state.value = RegisterGetxStates.error;
       _message.value = failure.message();
     }, (r) {
-      Get.to(() => const TodoPage());
+      Get.offAll(() => const TodoPage());
       _state.value = RegisterGetxStates.empty;
 
       _message.value = '';

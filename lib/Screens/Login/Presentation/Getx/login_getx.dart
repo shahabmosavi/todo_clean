@@ -21,7 +21,7 @@ class LoginGetx {
       _state.value = LoginGetxStates.error;
       _message.value = failure.message();
     }, (r) {
-      Get.to(() => const TodoPage());
+      Get.offAll(() => const TodoPage());
       _state.value = LoginGetxStates.empty;
 
       _message.value = '';
