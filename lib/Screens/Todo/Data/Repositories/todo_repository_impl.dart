@@ -1,3 +1,4 @@
+import 'package:todo_clean/Core/Entities/success.dart';
 import 'package:todo_clean/Screens/Todo/Data/DataSources/todo_local_data_source.dart';
 import 'package:todo_clean/Screens/Todo/Domain/Entities/todo_entity.dart';
 
@@ -15,5 +16,20 @@ class TodoRepositoryImpl implements TodoRepository {
   @override
   Future<List<TodoEntity>> loadTodos() async {
     return await localDataSource.loadTodos();
+  }
+
+  @override
+  Future<Success> deleteTodo(id) async {
+    return await localDataSource.deleteTodo(id);
+  }
+
+  @override
+  Future<Success> updateTodo(id, task) async {
+    return await localDataSource.updateTodo(id, task);
+  }
+
+  @override
+  Future<bool> toggleTodo(id) async {
+    return await localDataSource.toggleTodo(id);
   }
 }
