@@ -1,9 +1,9 @@
-import 'package:todo_clean/Core/Error/exceptions.dart';
-import 'package:todo_clean/Core/Error/failures.dart';
-import 'package:todo_clean/Core/Entities/success.dart';
+import '../../../../Core/Error/exceptions.dart';
+import '../../../../Core/Error/failures.dart';
+import '../../../../Core/Entities/success.dart';
 import 'package:dartz/dartz.dart';
-import 'package:todo_clean/Screens/Register/Data/DataSources/register_local_data_source.dart';
-import 'package:todo_clean/Screens/Register/Domain/Repositories/register_repository.dart';
+import '../DataSources/register_local_data_source.dart';
+import '../../Domain/Repositories/register_repository.dart';
 
 class RegisterRepositoryImpl implements RegisterRepository {
   final RegisterLocalDataSource localDataSource;

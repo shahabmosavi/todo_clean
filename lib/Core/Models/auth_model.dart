@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:todo_clean/Core/Entities/auth_entity.dart';
+import '../Entities/auth_entity.dart';
 
 class AuthModel extends AuthEntity {
   const AuthModel({required String password, required String username})

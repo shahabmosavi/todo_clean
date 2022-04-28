@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_clean/Screens/Login/Presentation/Pages/login_page.dart';
-import 'package:todo_clean/Screens/Login/Presentation/Getx/login_getx.dart';
-import 'package:todo_clean/Screens/Register/Presentation/Pages/register_page.dart';
+import '../Pages/login_page.dart';
+import '../Getx/login_getx.dart';
+import '../../../Register/Presentation/Pages/register_page.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({

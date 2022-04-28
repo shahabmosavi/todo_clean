@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_clean/Screens/Login/Presentation/Pages/login_page.dart';
-import 'package:todo_clean/Screens/Register/Presentation/Getx/register_getx.dart';
+import '../../../Login/Presentation/Pages/login_page.dart';
+import '../Getx/register_getx.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({

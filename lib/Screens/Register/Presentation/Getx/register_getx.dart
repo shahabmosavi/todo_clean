@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:todo_clean/Screens/Register/Domain/Usecases/register_usecases.dart';
-import 'package:todo_clean/Screens/Todo/Presentation/Pages/todo_page.dart';
+import '../../Domain/Usecases/register_usecases.dart';
+import '../../../Todo/Presentation/Pages/todo_page.dart';
 
 class RegisterGetx {
   final RegisterUsecases usecases;

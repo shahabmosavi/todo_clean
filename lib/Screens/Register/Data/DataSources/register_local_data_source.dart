@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
-import 'package:todo_clean/Core/Entities/success.dart';
-import 'package:todo_clean/Core/Models/auth_model.dart';
+import '../../../../Core/Entities/success.dart';
+import '../../../../Core/Models/auth_model.dart';
 
 import '../../../../Core/Error/exceptions.dart';
 

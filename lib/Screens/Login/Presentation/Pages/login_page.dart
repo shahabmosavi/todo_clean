@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_clean/Screens/Login/Presentation/Getx/login_getx.dart';
-import 'package:todo_clean/Screens/Login/Presentation/Widgets/login_form.dart';
+import '../Getx/login_getx.dart';
+import '../Widgets/login_form.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);

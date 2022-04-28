@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:todo_clean/Screens/Login/Domain/Usecases/login_usecases.dart';
-import 'package:todo_clean/Screens/Todo/Presentation/Pages/todo_page.dart';
+import '../../Domain/Usecases/login_usecases.dart';
+import '../../../Todo/Presentation/Pages/todo_page.dart';
 
 class LoginGetx {
   final LoginUsecases usecases;
