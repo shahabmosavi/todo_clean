@@ -19,6 +19,6 @@ class LoginFailure extends Failure {
   const LoginFailure();
   @override
   String message() {
-    return 'This UserName Does Noy Exists';
+    return 'This UserName Does Not Exists';
   }
 }
