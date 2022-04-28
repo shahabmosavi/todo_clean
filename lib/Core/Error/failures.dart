@@ -14,3 +14,11 @@ class RegisterFailure extends Failure {
     return 'This UserName Already Exists';
   }
 }
+
+class LoginFailure extends Failure {
+  const LoginFailure();
+  @override
+  String message() {
+    return 'This UserName Does Noy Exists';
+  }
+}
