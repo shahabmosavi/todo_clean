@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:todo_clean/Screens/Todo/Data/Models/todo_model.dart';
 import 'package:todo_clean/Screens/Todo/Domain/Entities/todo_entity.dart';
-import 'package:todo_clean/Screens/Todo/Domain/Models/todo_model.dart';
 
-import '../../../Fixtures/fixture_reader.dart';
+import '../../../../Fixtures/fixture_reader.dart';
 
 void main() {
   const tId = 1, tTask = "test task", tChecked = false;

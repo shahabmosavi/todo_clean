@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../Entities/todo_entity.dart';
+import 'package:todo_clean/Screens/Todo/Domain/Entities/todo_entity.dart';
 
 class TodoModel extends TodoEntity {
   const TodoModel(
