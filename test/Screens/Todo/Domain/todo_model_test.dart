@@ -1,38 +1,38 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todo_clean/Core/Entities/auth_entity.dart';
-import 'package:todo_clean/Core/Models/auth_model.dart';
+import 'package:todo_clean/Screens/Todo/Domain/Entities/todo_entity.dart';
+import 'package:todo_clean/Screens/Todo/Domain/Models/todo_model.dart';
 
 import '../../../Fixtures/fixture_reader.dart';
 
 void main() {
-  String tUsername = 'username', tPassword = 'password';
-  final tAuthEntity = AuthModel(username: tUsername, password: tPassword);
+  const tId = 1, tTask = "test task", tChecked = false;
+  const tTodoEntity = TodoModel(checked: tChecked, task: tTask, id: tId);
   test(
-    'should be a subclass of Auth entity',
+    'should be a subclass of Todo entity',
     () async {
       // assert
-      expect(tAuthEntity, isA<AuthEntity>());
+      expect(tTodoEntity, isA<TodoEntity>());
     },
   );
   group('formJson', () {
     test('should return a valid model', () {
       //arrange
-      final jsonData = fixture('user.json');
+      final jsonData = fixture('todo.json');
       // act
 
-      final result = AuthModel.fromJson(jsonData);
+      final result = TodoModel.fromJson(jsonData);
 
       //assert
-      expect(result, tAuthEntity);
+      expect(result, tTodoEntity);
     });
   });
   group('toJson', () {
     test('should return a valid map containing proper data', () {
       //arrange
-      final expectedMap = {'username': "username", "password": "password"};
+      final expectedMap = {'id': tId, "task": tTask, 'checked': tChecked};
       // act
 
-      final result = tAuthEntity.toJson();
+      final result = tTodoEntity.toJson();
 
       //assert
       expect(result, expectedMap);
