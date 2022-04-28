@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
+import 'package:todo_clean/Core/DataSource/core_local_data_source.dart';
 import 'package:todo_clean/Core/Entities/success.dart';
 import 'package:todo_clean/Screens/Todo/Data/Models/todo_model.dart';
 import 'package:todo_clean/Screens/Todo/Domain/Entities/todo_entity.dart';
@@ -15,11 +16,13 @@ abstract class TodoLocalDataSource {
 
 class TodoLocalDataSourceImpl implements TodoLocalDataSource {
   final HiveInterface hive;
+  final CoreLocalDataSource coreLocalDataSource;
 
-  TodoLocalDataSourceImpl(this.hive);
+  TodoLocalDataSourceImpl(this.hive, this.coreLocalDataSource);
   @override
   Future<TodoEntity> addTodo(task) async {
-    final todosBox = await hive.openBox('todos');
+    final user = await coreLocalDataSource.getLogedInUser();
+    final todosBox = await hive.openBox('todos-$user');
     final id = await todosBox.add(task);
     final todoModel = TodoModel(id: id, task: task, checked: false);
     await todosBox.put(id, json.encode(todoModel.toJson()));
@@ -29,15 +32,23 @@ class TodoLocalDataSourceImpl implements TodoLocalDataSource {
 
   @override
   Future<List<TodoEntity>> loadTodos() async {
-    final todosBox = await hive.openBox('todos');
-    final List<TodoEntity> list = todosBox.values.toList() as List<TodoEntity>;
+    final user = await coreLocalDataSource.getLogedInUser();
+
+    final todosBox = await hive.openBox('todos-$user');
+    final List<TodoEntity> list = [];
+    final jsonlist = todosBox.values.toList();
+    for (final json in jsonlist) {
+      list.add(TodoModel.fromJson(json));
+    }
     await todosBox.close();
     return list;
   }
 
   @override
   Future<Success> deleteTodo(id) async {
-    final todosBox = await hive.openBox('todos');
+    final user = await coreLocalDataSource.getLogedInUser();
+
+    final todosBox = await hive.openBox('todos-$user');
     todosBox.delete(id);
     await todosBox.close();
 
@@ -46,7 +57,9 @@ class TodoLocalDataSourceImpl implements TodoLocalDataSource {
 
   @override
   Future<Success> updateTodo(id, task) async {
-    final todosBox = await hive.openBox('todos');
+    final user = await coreLocalDataSource.getLogedInUser();
+
+    final todosBox = await hive.openBox('todos-$user');
     final todoModel = TodoModel.fromJson(await todosBox.get(id));
     await todosBox.put(
         id,
@@ -58,7 +71,9 @@ class TodoLocalDataSourceImpl implements TodoLocalDataSource {
 
   @override
   Future<bool> toggleTodo(id) async {
-    final todosBox = await hive.openBox('todos');
+    final user = await coreLocalDataSource.getLogedInUser();
+
+    final todosBox = await hive.openBox('todos-$user');
     final todo = await todosBox.get(id);
     final todoModel = TodoModel.fromJson(todo);
     final todoModelReversed =

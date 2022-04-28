@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:todo_clean/Core/DataSource/core_local_data_source.dart';
 import 'package:todo_clean/Core/Entities/success.dart';
 import 'package:todo_clean/Core/Error/exceptions.dart';
 import 'package:todo_clean/Core/Error/failures.dart';
@@ -9,14 +10,19 @@ import 'package:todo_clean/Screens/Register/Data/Repository/register_repository_
 
 class MockLocalDataSource extends Mock implements RegisterLocalDataSource {}
 
+class MockCoreLocalDataSource extends Mock implements CoreLocalDataSource {}
+
 void main() {
   late MockLocalDataSource mockLocalDataSource;
 
   late RegisterRepositoryImpl registerRepositoryImpl;
+  late MockCoreLocalDataSource mockCoreLocalDataSource;
 
   setUp(() {
     mockLocalDataSource = MockLocalDataSource();
-    registerRepositoryImpl = RegisterRepositoryImpl(mockLocalDataSource);
+    mockCoreLocalDataSource = MockCoreLocalDataSource();
+    registerRepositoryImpl =
+        RegisterRepositoryImpl(mockLocalDataSource, mockCoreLocalDataSource);
   });
   const tSuccess = Success();
   group('register', () {
@@ -25,7 +31,8 @@ void main() {
       //arrange
       when(() => mockLocalDataSource.register(any(), any()))
           .thenAnswer((_) async => tSuccess);
-
+      when(() => mockCoreLocalDataSource.setLogedInUser(any()))
+          .thenAnswer((_) async => tSuccess);
       //act
       final result =
           await registerRepositoryImpl.register(tUsername, tPassword);
@@ -34,6 +41,7 @@ void main() {
       expect(result, const Right(tSuccess));
       verify(() => mockLocalDataSource.register(tUsername, tPassword))
           .called(1);
+      verify(() => mockCoreLocalDataSource.setLogedInUser(tUsername)).called(1);
     });
     test('should return RegisterFailure when user registered usuccessfully',
         () async {

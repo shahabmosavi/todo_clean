@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:todo_clean/Core/DataSource/core_local_data_source.dart';
 import 'package:todo_clean/Core/Entities/success.dart';
 import 'package:todo_clean/Screens/Todo/Data/DataSources/todo_local_data_source.dart';
 import 'package:todo_clean/Screens/Todo/Data/Models/todo_model.dart';
@@ -14,17 +15,22 @@ class MockHive extends Mock implements HiveInterface {}
 
 class MockBox extends Mock implements Box {}
 
+class MockCoreLocalDataSource extends Mock implements CoreLocalDataSource {}
+
 void main() {
-  late final HiveInterface mockHive;
-  late final TodoLocalDataSourceImpl dataSource;
-  late final MockBox mockBox;
-  late final String jsonData;
-  const tId = 1, tTask = "test task", tChecked = false;
+  late HiveInterface mockHive;
+  late TodoLocalDataSourceImpl dataSource;
+  late MockCoreLocalDataSource mockCoreLocalDataSource;
+  late MockBox mockBox;
+  late String jsonData;
+  const tId = 1, tTask = "test task", tChecked = false, tUsername = 'username';
   const tTodoModel = TodoModel(id: tId, task: tTask, checked: tChecked);
-  setUp(() async {
+  setUp(() {
     mockHive = MockHive();
     mockBox = MockBox();
-    dataSource = TodoLocalDataSourceImpl(mockHive);
+
+    mockCoreLocalDataSource = MockCoreLocalDataSource();
+    dataSource = TodoLocalDataSourceImpl(mockHive, mockCoreLocalDataSource);
 
     jsonData = json.encode(tTodoModel.toJson());
   });
@@ -36,11 +42,14 @@ void main() {
       when(() => mockBox.add(any())).thenAnswer((_) async => tId);
       when(() => mockBox.put(any(), any())).thenAnswer((_) async => null);
       when(() => mockBox.close()).thenAnswer((_) async => null);
+      when(() => mockCoreLocalDataSource.getLogedInUser())
+          .thenAnswer((_) async => tUsername);
       //act
       final result = await dataSource.addTodo(tTask);
       //assert
       expect(result, tTodoModel);
-      verify(() => mockHive.openBox('todos')).called(1);
+      verify(() => mockHive.openBox('todos-$tUsername')).called(1);
+      verify(() => mockCoreLocalDataSource.getLogedInUser());
       verify(() => mockBox.add(tTask)).called(1);
       verify(() => mockBox.put(tId, jsonData)).called(1);
       verify(() => mockBox.close()).called(1);
@@ -51,13 +60,15 @@ void main() {
       //arrange
       when(() => mockHive.openBox(any())).thenAnswer((_) async => mockBox);
       when(() => mockBox.values).thenAnswer((_) => <TodoEntity>[]);
-      // ignore: avoid_returning_null_for_void
       when(() => mockBox.close()).thenAnswer((_) async => null);
+      when(() => mockCoreLocalDataSource.getLogedInUser())
+          .thenAnswer((_) async => tUsername);
       //act
       final result = await dataSource.loadTodos();
       //assert
       expect(result, <TodoEntity>[]);
-      verify(() => mockHive.openBox('todos')).called(1);
+      verify(() => mockHive.openBox('todos-$tUsername')).called(1);
+
       verify(() => mockBox.values).called(1);
       verify(() => mockBox.close()).called(1);
     });
@@ -68,11 +79,14 @@ void main() {
       when(() => mockHive.openBox(any())).thenAnswer((_) async => mockBox);
       when(() => mockBox.delete(any())).thenAnswer((_) async => null);
       when(() => mockBox.close()).thenAnswer((_) async => null);
+      when(() => mockCoreLocalDataSource.getLogedInUser())
+          .thenAnswer((_) async => tUsername);
       //act
       final result = await dataSource.deleteTodo(tId);
       //assert
       expect(result, const Success());
-      verify(() => mockHive.openBox('todos')).called(1);
+      verify(() => mockHive.openBox('todos-$tUsername')).called(1);
+
       verify(() => mockBox.delete(tId)).called(1);
       verify(() => mockBox.close()).called(1);
     });
@@ -83,11 +97,14 @@ void main() {
       when(() => mockHive.openBox(any())).thenAnswer((_) async => mockBox);
       when(() => mockBox.delete(any())).thenAnswer((_) async => null);
       when(() => mockBox.close()).thenAnswer((_) async => null);
+      when(() => mockCoreLocalDataSource.getLogedInUser())
+          .thenAnswer((_) async => tUsername);
       //act
       final result = await dataSource.deleteTodo(tId);
       //assert
       expect(result, const Success());
-      verify(() => mockHive.openBox('todos')).called(1);
+      verify(() => mockHive.openBox('todos-$tUsername')).called(1);
+
       verify(() => mockBox.delete(tId)).called(1);
       verify(() => mockBox.close()).called(1);
     });
@@ -101,11 +118,14 @@ void main() {
 
       when(() => mockBox.put(any(), any())).thenAnswer((_) async => null);
       when(() => mockBox.close()).thenAnswer((_) async => null);
+      when(() => mockCoreLocalDataSource.getLogedInUser())
+          .thenAnswer((_) async => tUsername);
       //act
       final result = await dataSource.updateTodo(tId, tTask);
       //assert
       expect(result, const Success());
-      verify(() => mockHive.openBox('todos')).called(1);
+      verify(() => mockHive.openBox('todos-$tUsername')).called(1);
+
       verify(() => mockBox.put(tId, jsonData)).called(1);
       verify(() => mockBox.close()).called(1);
     });
@@ -120,11 +140,14 @@ void main() {
       when(() => mockBox.get(any())).thenAnswer((_) async => jsonDataTrue);
       when(() => mockBox.put(any(), any())).thenAnswer((_) async => null);
       when(() => mockBox.close()).thenAnswer((_) async => null);
+      when(() => mockCoreLocalDataSource.getLogedInUser())
+          .thenAnswer((_) async => tUsername);
       //act
       final result = await dataSource.toggleTodo(tId);
       //assert
       expect(result, false);
-      verify(() => mockHive.openBox('todos')).called(1);
+      verify(() => mockHive.openBox('todos-$tUsername')).called(1);
+
       verify(() => mockBox.put(tId, jsonData)).called(1);
       verify(() => mockBox.close()).called(1);
     });
@@ -134,11 +157,14 @@ void main() {
       when(() => mockBox.get(any())).thenAnswer((_) async => jsonData);
       when(() => mockBox.put(any(), any())).thenAnswer((_) async => null);
       when(() => mockBox.close()).thenAnswer((_) async => null);
+      when(() => mockCoreLocalDataSource.getLogedInUser())
+          .thenAnswer((_) async => tUsername);
       //act
       final result = await dataSource.toggleTodo(tId);
       //assert
       expect(result, true);
-      verify(() => mockHive.openBox('todos')).called(1);
+      verify(() => mockHive.openBox('todos-$tUsername')).called(1);
+
       verify(() => mockBox.put(tId, jsonDataTrue)).called(1);
       verify(() => mockBox.close()).called(1);
     });

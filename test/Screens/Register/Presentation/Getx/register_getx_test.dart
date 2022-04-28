@@ -22,20 +22,7 @@ void main() {
   group('register', () {
     const tUsername = 'usenrame', tPassword = 'password';
     const tAuthModel = Success();
-    testWidgets('should call register in usecase if input are not empty',
-        (tester) async {
-      //arrange
-      await tester.pumpWidget(const GetMaterialApp(home: Scaffold()));
-
-      when(() => mockRegisterUsecases.register(any(), any()))
-          .thenAnswer((_) async => const Right(tAuthModel));
-      //act
-      registerGetx.register(tUsername, tPassword);
-      //assert
-      verify(() => mockRegisterUsecases.register(tUsername, tPassword))
-          .called(1);
-    });
-    testWidgets('should call register in usecase if input are not empty',
+    testWidgets('should call register in usecase if inputs are not empty',
         (tester) async {
       //arrange
       await tester.pumpWidget(const GetMaterialApp(home: Scaffold()));

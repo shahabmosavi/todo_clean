@@ -23,7 +23,7 @@ void main() {
     const tUsername = 'usenrame', tPassword = 'password';
     const tAuthModel = Success();
 
-    testWidgets('should call login in usecase if input are not empty',
+    testWidgets('should call login in usecase if inputs are not empty',
         (tester) async {
       //arrange
       await tester.pumpWidget(const GetMaterialApp(home: Scaffold()));

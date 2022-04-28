@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:todo_clean/Core/DataSource/core_local_data_source.dart';
 import 'package:todo_clean/Core/Entities/success.dart';
 import 'package:todo_clean/Core/Error/exceptions.dart';
 import 'package:todo_clean/Core/Error/failures.dart';
@@ -9,14 +10,20 @@ import 'package:todo_clean/Screens/Login/Data/Repository/login_repository_impl.d
 
 class MockLocalDataSource extends Mock implements LoginLocalDataSource {}
 
+class MockCoreLocalDataSource extends Mock implements CoreLocalDataSource {}
+
 void main() {
   late MockLocalDataSource mockLocalDataSource;
+  late MockCoreLocalDataSource mockCoreLocalDataSource;
 
   late LoginRepositoryImpl loginRepositoryImpl;
 
   setUp(() {
     mockLocalDataSource = MockLocalDataSource();
-    loginRepositoryImpl = LoginRepositoryImpl(mockLocalDataSource);
+    mockCoreLocalDataSource = MockCoreLocalDataSource();
+
+    loginRepositoryImpl =
+        LoginRepositoryImpl(mockLocalDataSource, mockCoreLocalDataSource);
   });
   const tSuccess = Success();
   group('login', () {
@@ -27,6 +34,9 @@ void main() {
       //arrange
       when(() => mockLocalDataSource.login(any(), any()))
           .thenAnswer((_) async => tSuccess);
+      when(() => mockCoreLocalDataSource.setLogedInUser(
+            any(),
+          )).thenAnswer((_) async => tSuccess);
 
       //act
       final result = await loginRepositoryImpl.login(tUsername, tPassword);
@@ -34,6 +44,7 @@ void main() {
       //assert
       expect(result, const Right(tSuccess));
       verify(() => mockLocalDataSource.login(tUsername, tPassword)).called(1);
+      verify(() => mockCoreLocalDataSource.setLogedInUser(tUsername)).called(1);
     });
     test('should return LoginFailure when user logined usuccessfully',
         () async {
